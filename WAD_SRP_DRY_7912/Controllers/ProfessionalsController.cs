@@ -3,26 +3,26 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using WAD_SRP_DRY_7912.DAL;
-using WAD_SRP_DRY_7912.Models;
+using WAD_PetCare_7912_DAL;
+using WAD_PetCare_7912_DAL.DBO;
+using WAD_PetCare_7912_DAL.Repositories;
 
 namespace WAD_SRP_DRY_7912.Controllers
 {
     public class ProfessionalsController : Controller
     {
-        private readonly PetCareCenterDbContext _context;
+        private readonly IRepository<Professional> _professionalRepo;
 
-        public ProfessionalsController(PetCareCenterDbContext context)
+        public ProfessionalsController(IRepository<Professional> professionalRepo)
         {
-            _context = context;
+            _professionalRepo = professionalRepo;
         }
 
         // GET: Professionals
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Professionals.ToListAsync());
+            return View(await _professionalRepo.GetAllAsync());
         }
 
         // GET: Professionals/Details/5
@@ -33,8 +33,7 @@ namespace WAD_SRP_DRY_7912.Controllers
                 return NotFound();
             }
 
-            var professional = await _context.Professionals
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var professional = await _professionalRepo.GetByIdAsync(id.Value);
             if (professional == null)
             {
                 return NotFound();
@@ -58,8 +57,7 @@ namespace WAD_SRP_DRY_7912.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(professional);
-                await _context.SaveChangesAsync();
+                await _professionalRepo.CreateAsync(professional);
                 return RedirectToAction(nameof(Index));
             }
             return View(professional);
@@ -73,7 +71,7 @@ namespace WAD_SRP_DRY_7912.Controllers
                 return NotFound();
             }
 
-            var professional = await _context.Professionals.FindAsync(id);
+            var professional = await _professionalRepo.GetByIdAsync(id.Value);
             if (professional == null)
             {
                 return NotFound();
@@ -97,12 +95,11 @@ namespace WAD_SRP_DRY_7912.Controllers
             {
                 try
                 {
-                    _context.Update(professional);
-                    await _context.SaveChangesAsync();
+                    await _professionalRepo.UpdateAsync(professional);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ProfessionalExists(professional.Id))
+                    if (!_professionalRepo.Exists(professional.Id))
                     {
                         return NotFound();
                     }
@@ -123,9 +120,7 @@ namespace WAD_SRP_DRY_7912.Controllers
             {
                 return NotFound();
             }
-
-            var professional = await _context.Professionals
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var professional = await _professionalRepo.GetByIdAsync(id.Value);
             if (professional == null)
             {
                 return NotFound();
@@ -139,15 +134,8 @@ namespace WAD_SRP_DRY_7912.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var professional = await _context.Professionals.FindAsync(id);
-            _context.Professionals.Remove(professional);
-            await _context.SaveChangesAsync();
+            await _professionalRepo.DeleteAsync(id);
             return RedirectToAction(nameof(Index));
-        }
-
-        private bool ProfessionalExists(int id)
-        {
-            return _context.Professionals.Any(e => e.Id == id);
         }
     }
 }

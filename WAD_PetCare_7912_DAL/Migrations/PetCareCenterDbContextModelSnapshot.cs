@@ -3,17 +3,15 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using WAD_SRP_DRY_7912.DAL;
+using WAD_PetCare_7912_DAL;
 
-namespace WAD_SRP_DRY_7912.Migrations
+namespace WAD_PetCare_7912_DAL.Migrations
 {
     [DbContext(typeof(PetCareCenterDbContext))]
-    [Migration("20210311190506_init")]
-    partial class init
+    partial class PetCareCenterDbContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,7 +19,7 @@ namespace WAD_SRP_DRY_7912.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("WAD_SRP_DRY_7912.Models.Customer", b =>
+            modelBuilder.Entity("WAD_PetCare_7912_DAL.DBO.Customer", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -54,12 +52,17 @@ namespace WAD_SRP_DRY_7912.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("ProfessionalId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("ProfessionalId");
 
                     b.ToTable("Customers");
                 });
 
-            modelBuilder.Entity("WAD_SRP_DRY_7912.Models.Professional", b =>
+            modelBuilder.Entity("WAD_PetCare_7912_DAL.DBO.Professional", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -103,6 +106,13 @@ namespace WAD_SRP_DRY_7912.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Professionals");
+                });
+
+            modelBuilder.Entity("WAD_PetCare_7912_DAL.DBO.Customer", b =>
+                {
+                    b.HasOne("WAD_PetCare_7912_DAL.DBO.Professional", "Professional")
+                        .WithMany("Customers")
+                        .HasForeignKey("ProfessionalId");
                 });
 #pragma warning restore 612, 618
         }

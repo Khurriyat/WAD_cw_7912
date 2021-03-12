@@ -5,25 +5,28 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using WAD_SRP_DRY_7912.DAL;
-using WAD_SRP_DRY_7912.Models;
+using WAD_PetCare_7912_DAL;
+using WAD_PetCare_7912_DAL.DBO;
+using WAD_PetCare_7912_DAL.Repositories;
 
 namespace WAD_SRP_DRY_7912.Controllers
 {
     public class CustomersController : Controller
     {
-        private readonly PetCareCenterDbContext _context;
+        private readonly IRepository<Customer> _customerRepo;
+        private readonly IRepository<Professional> _professionalRepo;
 
-        public CustomersController(PetCareCenterDbContext context)
+        public CustomersController(IRepository<Customer> customerRepo, 
+            IRepository<Professional> professionalRepo)
         {
-            _context = context;
+            _customerRepo = customerRepo;
+            _professionalRepo = professionalRepo;
         }
 
         // GET: Customers
         public async Task<IActionResult> Index()
         {
-            var petCareCenterDbContext = _context.Customers.Include(c => c.Professional);
-            return View(await petCareCenterDbContext.ToListAsync());
+            return View(await _customerRepo.GetAllAsync());
         }
 
         // GET: Customers/Details/5
@@ -34,9 +37,7 @@ namespace WAD_SRP_DRY_7912.Controllers
                 return NotFound();
             }
 
-            var customer = await _context.Customers
-                .Include(c => c.Professional)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var customer = await _customerRepo.GetByIdAsync(id.Value);
             if (customer == null)
             {
                 return NotFound();
@@ -46,9 +47,9 @@ namespace WAD_SRP_DRY_7912.Controllers
         }
 
         // GET: Customers/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            ViewData["ProfessionalId"] = new SelectList(_context.Professionals, "Id", "FirstName");
+            ViewData["ProfessionalId"] = new SelectList(await _professionalRepo.GetAllAsync(), "Id", "FirstName");
             return View();
         }
 
@@ -61,11 +62,10 @@ namespace WAD_SRP_DRY_7912.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(customer);
-                await _context.SaveChangesAsync();
+                await _customerRepo.CreateAsync(customer);
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ProfessionalId"] = new SelectList(_context.Professionals, "Id", "FirstName", customer.ProfessionalId);
+            ViewData["ProfessionalId"] = new SelectList(await _professionalRepo.GetAllAsync(), "Id", "FirstName", customer.ProfessionalId);
             return View(customer);
         }
 
@@ -77,12 +77,12 @@ namespace WAD_SRP_DRY_7912.Controllers
                 return NotFound();
             }
 
-            var customer = await _context.Customers.FindAsync(id);
+            var customer = await _customerRepo.GetByIdAsync(id.Value);
             if (customer == null)
             {
                 return NotFound();
             }
-            ViewData["ProfessionalId"] = new SelectList(_context.Professionals, "Id", "FirstName", customer.ProfessionalId);
+            ViewData["ProfessionalId"] = new SelectList(await _professionalRepo.GetAllAsync(), "Id", "FirstName", customer.ProfessionalId);
             return View(customer);
         }
 
@@ -102,12 +102,11 @@ namespace WAD_SRP_DRY_7912.Controllers
             {
                 try
                 {
-                    _context.Update(customer);
-                    await _context.SaveChangesAsync();
+                    await _customerRepo.UpdateAsync(customer);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CustomerExists(customer.Id))
+                    if (!_customerRepo.Exists(customer.Id))
                     {
                         return NotFound();
                     }
@@ -118,7 +117,7 @@ namespace WAD_SRP_DRY_7912.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ProfessionalId"] = new SelectList(_context.Professionals, "Id", "FirstName", customer.ProfessionalId);
+            ViewData["ProfessionalId"] = new SelectList(await _professionalRepo.GetAllAsync(), "Id", "FirstName", customer.ProfessionalId);
             return View(customer);
         }
 
@@ -130,9 +129,7 @@ namespace WAD_SRP_DRY_7912.Controllers
                 return NotFound();
             }
 
-            var customer = await _context.Customers
-                .Include(c => c.Professional)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var customer = await _customerRepo.GetByIdAsync(id.Value);
             if (customer == null)
             {
                 return NotFound();
@@ -146,15 +143,8 @@ namespace WAD_SRP_DRY_7912.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var customer = await _context.Customers.FindAsync(id);
-            _context.Customers.Remove(customer);
-            await _context.SaveChangesAsync();
+            await _customerRepo.DeleteAsync(id);
             return RedirectToAction(nameof(Index));
-        }
-
-        private bool CustomerExists(int id)
-        {
-            return _context.Customers.Any(e => e.Id == id);
         }
     }
 }

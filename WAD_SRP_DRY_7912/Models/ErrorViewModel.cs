@@ -1,6 +1,6 @@
 using System;
 
-namespace WAD_SRP_DRY_7912.Models
+namespace WAD_PetCare_7912_DAL.DBO
 {
     public class ErrorViewModel
     {

@@ -5,9 +5,8 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using WAD_SRP_DRY_7912.DAL;
-
-namespace WAD_SRP_DRY_7912.Migrations
+using WAD_PetCare_7912_DAL;
+namespace WAD_PetCare_7912_DAL.Migrations
 {
     [DbContext(typeof(PetCareCenterDbContext))]
     [Migration("20210311200528_Customer_Entity")]
@@ -21,7 +20,7 @@ namespace WAD_SRP_DRY_7912.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("WAD_SRP_DRY_7912.Models.Customer", b =>
+            modelBuilder.Entity("WAD_PetCare_7912_DAL.DBO.Customer", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -64,7 +63,7 @@ namespace WAD_SRP_DRY_7912.Migrations
                     b.ToTable("Customers");
                 });
 
-            modelBuilder.Entity("WAD_SRP_DRY_7912.Models.Professional", b =>
+            modelBuilder.Entity("WAD_PetCare_7912_DAL.DBO.Professional", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -110,9 +109,9 @@ namespace WAD_SRP_DRY_7912.Migrations
                     b.ToTable("Professionals");
                 });
 
-            modelBuilder.Entity("WAD_SRP_DRY_7912.Models.Customer", b =>
+            modelBuilder.Entity("WAD_PetCare_7912_DAL.DBO.Customer", b =>
                 {
-                    b.HasOne("WAD_SRP_DRY_7912.Models.Professional", "Professional")
+                    b.HasOne("WAD_PetCare_7912_DAL.DBO.Professional", "Professional")
                         .WithMany("Customers")
                         .HasForeignKey("ProfessionalId");
                 });

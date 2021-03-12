@@ -21,13 +21,13 @@ using WAD_SRP_DRY_7912;
 #nullable disable
 #nullable restore
 #line 2 "C:\Users\Khurriyat\Desktop\WAD_SRP_DRY_7912\WAD_SRP_DRY_7912\Views\_ViewImports.cshtml"
-using WAD_SRP_DRY_7912.Models;
+using WAD_PetCare_7912_DAL.DBO;
 
 #line default
 #line hidden
 #nullable disable
     [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"d6a5625cc8fb4476f348b0fe9041c550465d8bf9", @"/Views/Shared/Error.cshtml")]
-    [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"5fd90eff76a1e0318ec79d127ca2e64a32d07400", @"/Views/_ViewImports.cshtml")]
+    [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"72858dfb7a91cbaed87df6d39d71fbcad3806a90", @"/Views/_ViewImports.cshtml")]
     public class Views_Shared_Error : global::Microsoft.AspNetCore.Mvc.Razor.RazorPage<ErrorViewModel>
     {
         #pragma warning disable 1998

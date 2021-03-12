@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace WAD_SRP_DRY_7912.Migrations
+namespace WAD_PetCare_7912_DAL.Migrations
 {
     public partial class Customer_Entity : Migration
     {

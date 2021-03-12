@@ -182,3 +182,5 @@ C:\Users\Khurriyat\Desktop\WAD_SRP_DRY_7912\WAD_SRP_DRY_7912\obj\Debug\netcoreap
 C:\Users\Khurriyat\Desktop\WAD_SRP_DRY_7912\WAD_SRP_DRY_7912\obj\Debug\netcoreapp3.1\Razor\Views\Professionals\Details.cshtml.g.cs
 C:\Users\Khurriyat\Desktop\WAD_SRP_DRY_7912\WAD_SRP_DRY_7912\obj\Debug\netcoreapp3.1\Razor\Views\Professionals\Edit.cshtml.g.cs
 C:\Users\Khurriyat\Desktop\WAD_SRP_DRY_7912\WAD_SRP_DRY_7912\obj\Debug\netcoreapp3.1\Razor\Views\Professionals\Index.cshtml.g.cs
+C:\Users\Khurriyat\Desktop\WAD_SRP_DRY_7912\WAD_SRP_DRY_7912\bin\Debug\netcoreapp3.1\WAD_PetCare_7912_DAL.dll
+C:\Users\Khurriyat\Desktop\WAD_SRP_DRY_7912\WAD_SRP_DRY_7912\bin\Debug\netcoreapp3.1\WAD_PetCare_7912_DAL.pdb

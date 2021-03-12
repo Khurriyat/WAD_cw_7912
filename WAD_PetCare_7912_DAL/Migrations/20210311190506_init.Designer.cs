@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using WAD_SRP_DRY_7912.DAL;
+using WAD_PetCare_7912_DAL;
 
-namespace WAD_SRP_DRY_7912.Migrations
+namespace WAD_PetCare_7912_DAL.Migrations
 {
     [DbContext(typeof(PetCareCenterDbContext))]
-    partial class PetCareCenterDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210311190506_init")]
+    partial class init
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -52,12 +54,7 @@ namespace WAD_SRP_DRY_7912.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("ProfessionalId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("ProfessionalId");
 
                     b.ToTable("Customers");
                 });
@@ -106,13 +103,6 @@ namespace WAD_SRP_DRY_7912.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Professionals");
-                });
-
-            modelBuilder.Entity("WAD_SRP_DRY_7912.Models.Customer", b =>
-                {
-                    b.HasOne("WAD_SRP_DRY_7912.Models.Professional", "Professional")
-                        .WithMany("Customers")
-                        .HasForeignKey("ProfessionalId");
                 });
 #pragma warning restore 612, 618
         }

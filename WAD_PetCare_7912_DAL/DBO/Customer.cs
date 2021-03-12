@@ -4,9 +4,9 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace WAD_SRP_DRY_7912.Models
+namespace WAD_PetCare_7912_DAL.DBO
 {
-    public class Professional
+    public class Customer
     {
         public int Id { get; set; }
 
@@ -21,21 +21,6 @@ namespace WAD_SRP_DRY_7912.Models
         public string LastName { get; set; }
 
         [Required]
-        [Display(Name = "Date of Birth")]
-        public DateTime DoB { get; set; }
-
-        [Required]
-        public string Education { get; set; }
-
-        [Required]
-        [Display(Name = "Work Experience")]
-        public string WorkExperience { get; set; }
-
-        [Required]
-        public string Speciality { get; set; }
-        //dropdown is planned to apply later
-
-        [Required]
         [MinLength(9)]
         [Display(Name = "Phone No")]
         public string PhoneNo { get; set; }
@@ -46,6 +31,17 @@ namespace WAD_SRP_DRY_7912.Models
         [Required]
         public string Address { get; set; }
 
-        public virtual ICollection<Customer> Customers { get; set; }
+        [Required]
+        [Range(1, int.MaxValue)]
+        [Display(Name = "No of Pets")]
+        public int NoOfPets { get; set; }
+
+        [Required]
+        [Display(Name = "Pet Type")]
+        public string PetType { get; set; }
+
+        public int? ProfessionalId { get; set; }
+
+        public virtual Professional Professional { get; set; }
     }
 }
