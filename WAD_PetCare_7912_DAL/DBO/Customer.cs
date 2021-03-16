@@ -36,12 +36,11 @@ namespace WAD_PetCare_7912_DAL.DBO
         [Display(Name = "No of Pets")]
         public int NoOfPets { get; set; }
 
-        [Required]
-        [Display(Name = "Pet Type")]
-        public string PetType { get; set; }
-
+        [Display(Name = "Professional")]
         public int? ProfessionalId { get; set; }
 
         public virtual Professional Professional { get; set; }
+
+        public virtual ICollection<Pet> Pets { get; set; }
     }
 }

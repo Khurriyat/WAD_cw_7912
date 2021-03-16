@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Khurriyat\\Desktop\\WAD_SRP_DRY_7912\\WAD_PetCare_7912_DAL\\WAD_PetCare_7912_DAL.csproj": {}
+    "C:\\Users\\Khurriyat\\Desktop\\WAD_PetCare_7912\\WAD_PetCare_7912_DAL\\WAD_PetCare_7912_DAL.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Khurriyat\\Desktop\\WAD_SRP_DRY_7912\\WAD_PetCare_7912_DAL\\WAD_PetCare_7912_DAL.csproj": {
+    "C:\\Users\\Khurriyat\\Desktop\\WAD_PetCare_7912\\WAD_PetCare_7912_DAL\\WAD_PetCare_7912_DAL.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Khurriyat\\Desktop\\WAD_SRP_DRY_7912\\WAD_PetCare_7912_DAL\\WAD_PetCare_7912_DAL.csproj",
+        "projectUniqueName": "C:\\Users\\Khurriyat\\Desktop\\WAD_PetCare_7912\\WAD_PetCare_7912_DAL\\WAD_PetCare_7912_DAL.csproj",
         "projectName": "WAD_PetCare_7912_DAL",
-        "projectPath": "C:\\Users\\Khurriyat\\Desktop\\WAD_SRP_DRY_7912\\WAD_PetCare_7912_DAL\\WAD_PetCare_7912_DAL.csproj",
+        "projectPath": "C:\\Users\\Khurriyat\\Desktop\\WAD_PetCare_7912\\WAD_PetCare_7912_DAL\\WAD_PetCare_7912_DAL.csproj",
         "packagesPath": "C:\\Users\\Khurriyat\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Khurriyat\\Desktop\\WAD_SRP_DRY_7912\\WAD_PetCare_7912_DAL\\obj\\",
+        "outputPath": "C:\\Users\\Khurriyat\\Desktop\\WAD_PetCare_7912\\WAD_PetCare_7912_DAL\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Microsoft\\Xamarin\\NuGet\\",
@@ -51,21 +51,21 @@
             },
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
-              "version": "[3.1.12, )"
+              "version": "[3.1.13, )"
             },
             "Microsoft.EntityFrameworkCore.SqlServer": {
               "target": "Package",
-              "version": "[3.1.12, )"
+              "version": "[3.1.13, )"
             },
             "Microsoft.EntityFrameworkCore.Sqlite": {
               "target": "Package",
-              "version": "[3.1.12, )"
+              "version": "[3.1.13, )"
             },
             "Microsoft.EntityFrameworkCore.Tools": {
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
               "suppressParent": "All",
               "target": "Package",
-              "version": "[3.1.12, )"
+              "version": "[3.1.13, )"
             },
             "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
               "target": "Package",

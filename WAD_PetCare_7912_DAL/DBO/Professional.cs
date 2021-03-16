@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace WAD_PetCare_7912_DAL.DBO
 {
-    public class Professional
+    public class Professional : IValidatableObject
     {
         public int Id { get; set; }
 
@@ -47,5 +47,15 @@ namespace WAD_PetCare_7912_DAL.DBO
         public string Address { get; set; }
 
         public virtual ICollection<Customer> Customers { get; set; }
+
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            var validationResult = new List<ValidationResult>();
+            if(DateTime.Now.AddYears(-18) <= DoB)
+            {
+                validationResult.Add(new ValidationResult("Specialist must be elder than 18 years old"));
+            }
+            return validationResult;
+        }
     }
 }

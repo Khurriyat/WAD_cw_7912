@@ -28,6 +28,7 @@ namespace WAD_SRP_DRY_7912
         {
             services.AddScoped<IRepository<Customer>, CustomerRepo>();
             services.AddScoped<IRepository<Professional>, ProfessionalRepo>();
+            services.AddScoped<IRepository<Pet>, PetRepo>();
             services.AddControllersWithViews();
             services.AddDbContext<PetCareCenterDbContext>(
                 options => options.UseSqlServer(

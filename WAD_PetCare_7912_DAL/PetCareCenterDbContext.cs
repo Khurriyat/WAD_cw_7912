@@ -12,11 +12,12 @@ namespace WAD_PetCare_7912_DAL
         public PetCareCenterDbContext(DbContextOptions<PetCareCenterDbContext> options) : 
             base(options)
         {
-
         }
 
         public virtual DbSet<Customer> Customers { get; set; }
 
         public virtual DbSet<Professional> Professionals { get; set; }
+
+        public virtual DbSet<Pet> Pets { get; set; }
     }
 }

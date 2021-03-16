@@ -9,14 +9,14 @@ using WAD_PetCare_7912_DAL;
 using WAD_PetCare_7912_DAL.DBO;
 using WAD_PetCare_7912_DAL.Repositories;
 
-namespace WAD_SRP_DRY_7912.Controllers
+namespace WAD_PetCare_7912.Controllers
 {
     public class CustomersController : Controller
     {
         private readonly IRepository<Customer> _customerRepo;
         private readonly IRepository<Professional> _professionalRepo;
 
-        public CustomersController(IRepository<Customer> customerRepo, 
+        public CustomersController(IRepository<Customer> customerRepo,
             IRepository<Professional> professionalRepo)
         {
             _customerRepo = customerRepo;
@@ -28,6 +28,7 @@ namespace WAD_SRP_DRY_7912.Controllers
         {
             return View(await _customerRepo.GetAllAsync());
         }
+
 
         // GET: Customers/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -58,7 +59,7 @@ namespace WAD_SRP_DRY_7912.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,FirstName,LastName,PhoneNo,Email,Address,NoOfPets,PetType,ProfessionalId")] Customer customer)
+        public async Task<IActionResult> Create([Bind("Id,FirstName,LastName,PhoneNo,Email,Address,NoOfPets,ProfessionalId")] Customer customer)
         {
             if (ModelState.IsValid)
             {
@@ -91,13 +92,12 @@ namespace WAD_SRP_DRY_7912.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,FirstName,LastName,PhoneNo,Email,Address,NoOfPets,PetType,ProfessionalId")] Customer customer)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,FirstName,LastName,PhoneNo,Email,Address,NoOfPets,ProfessionalId")] Customer customer)
         {
             if (id != customer.Id)
             {
                 return NotFound();
             }
-
             if (ModelState.IsValid)
             {
                 try

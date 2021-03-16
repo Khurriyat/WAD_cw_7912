@@ -6,17 +6,18 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WAD_PetCare_7912_DAL;
+
 namespace WAD_PetCare_7912_DAL.Migrations
 {
     [DbContext(typeof(PetCareCenterDbContext))]
-    [Migration("20210311200528_Customer_Entity")]
-    partial class Customer_Entity
+    [Migration("20210315214113_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.12")
+                .HasAnnotation("ProductVersion", "3.1.13")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -45,10 +46,6 @@ namespace WAD_PetCare_7912_DAL.Migrations
                     b.Property<int>("NoOfPets")
                         .HasColumnType("int");
 
-                    b.Property<string>("PetType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("PhoneNo")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -61,6 +58,30 @@ namespace WAD_PetCare_7912_DAL.Migrations
                     b.HasIndex("ProfessionalId");
 
                     b.ToTable("Customers");
+                });
+
+            modelBuilder.Entity("WAD_PetCare_7912_DAL.DBO.Pet", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("CustomerId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PetType")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CustomerId");
+
+                    b.ToTable("Pets");
                 });
 
             modelBuilder.Entity("WAD_PetCare_7912_DAL.DBO.Professional", b =>
@@ -114,6 +135,13 @@ namespace WAD_PetCare_7912_DAL.Migrations
                     b.HasOne("WAD_PetCare_7912_DAL.DBO.Professional", "Professional")
                         .WithMany("Customers")
                         .HasForeignKey("ProfessionalId");
+                });
+
+            modelBuilder.Entity("WAD_PetCare_7912_DAL.DBO.Pet", b =>
+                {
+                    b.HasOne("WAD_PetCare_7912_DAL.DBO.Customer", "Customer")
+                        .WithMany("Pets")
+                        .HasForeignKey("CustomerId");
                 });
 #pragma warning restore 612, 618
         }
