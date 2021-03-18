@@ -4,7 +4,7 @@ using System.Text;
 
 namespace WAD_PetCare_7912_DAL.DBO
 {
-    public enum PetType
+    public enum PetTypeEnum
     {
         Turtle,
         Cat,

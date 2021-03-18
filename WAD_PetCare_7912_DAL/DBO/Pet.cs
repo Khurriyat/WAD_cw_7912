@@ -15,7 +15,7 @@ namespace WAD_PetCare_7912_DAL.DBO
 
         [Required]
         [Display(Name = "Pet Type")]
-        public PetType PetType { get; set; }
+        public PetTypeEnum PetType { get; set; }
 
         [Display(Name = "Customer")]
         public int? CustomerId { get; set; }

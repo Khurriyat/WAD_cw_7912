@@ -1,4 +1,4 @@
-﻿@model WAD_PetCare_7912_DAL.DBO.Customer
+﻿@model WAD_PetCare_7912.Models.CustomerViewModel
 
 @{
     ViewData["Title"] = "Edit";
@@ -45,7 +45,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="ProfessionalId" class="control-label"></label>
-                <select asp-for="ProfessionalId" class="form-control" asp-items="ViewBag.ProfessionalId"></select>
+                <select asp-for="ProfessionalId" class="form-control" asp-items="Model.Professionals"></select>
                 <span asp-validation-for="ProfessionalId" class="text-danger"></span>
             </div>
             <div class="form-group">

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using WAD_PetCare_7912.Models;
 using WAD_PetCare_7912_DAL;
 using WAD_PetCare_7912_DAL.DBO;
 using WAD_PetCare_7912_DAL.Repositories;
@@ -49,8 +50,9 @@ namespace WAD_PetCare_7912.Controllers
         // GET: Pets/Create
         public async Task<IActionResult> Create()
         {
-            ViewData["CustomerId"] = new SelectList(await _customerRepo.GetAllAsync(), "Id", "FirstName");
-            return View();
+            var petViewModel = new PetViewModel();
+            petViewModel.Customers = new SelectList(await _customerRepo.GetAllAsync(), "Id", "FirstName");
+            return View(petViewModel);
         }
 
         // POST: Pets/Create
@@ -65,8 +67,9 @@ namespace WAD_PetCare_7912.Controllers
                 await _petRepo.CreateAsync(pet);
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CustomerId"] = new SelectList(await _customerRepo.GetAllAsync(), "Id", "FirstName", pet.CustomerId);
-            return View(pet);
+            var petViewModel = (PetViewModel)pet;
+            petViewModel.Customers = new SelectList(await _customerRepo.GetAllAsync(), "Id", "FirstName", pet.CustomerId);
+            return View(petViewModel);
         }
 
         // GET: Pets/Edit/5
@@ -82,8 +85,10 @@ namespace WAD_PetCare_7912.Controllers
             {
                 return NotFound();
             }
-            ViewData["CustomerId"] = new SelectList(await _customerRepo.GetAllAsync(), "Id", "FirstName", pet.CustomerId);
-            return View(pet);
+            var petViewModel = new PetViewModel();
+            petViewModel.Id = pet.Id;
+            petViewModel.Customers = new SelectList(await _customerRepo.GetAllAsync(), "Id", "FirstName", pet.CustomerId);
+            return View(petViewModel);
         }
 
         // POST: Pets/Edit/5
@@ -91,7 +96,7 @@ namespace WAD_PetCare_7912.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,PetType,CustomerId")] Pet pet)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,PetType,CustomerId")] PetViewModel pet)
         {
             if (id != pet.Id)
             {
@@ -117,7 +122,9 @@ namespace WAD_PetCare_7912.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CustomerId"] = new SelectList(await _customerRepo.GetAllAsync(), "Id", "FirstName", pet.CustomerId);
+            var petViewModel = new PetViewModel();
+            petViewModel.CopyFromPet(pet);
+            pet.Customers = new SelectList(await _customerRepo.GetAllAsync(), "Id", "FirstName", pet.CustomerId);
             return View(pet);
         }
 
