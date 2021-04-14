@@ -1,0 +1,97 @@
+﻿
+@{
+    ViewData["Title"] = "API Client Angular Pets";
+}
+
+<h1>Pets</h1>
+
+<div id="petsContainer" ng-app="petsApp">
+    <div ng-controller="petsController">
+        <table class="table">
+            <tbody>
+
+                <tr>
+                    <td>
+                        <strong>Id</strong>
+                    </td>
+                    <td>
+                        <strong>Name</strong>
+                    </td>
+                    <td>
+                        <strong>Pet Type</strong>
+                    </td>
+                    <td>
+                        <strong>Customer Id</strong>
+                    </td>
+                </tr>
+
+                <tr ng-repeat="pet in pets">
+                    <td>
+                        {{pet.id}}
+                    </td>
+                    <td>
+                        {{pet.name}}
+                    </td>
+                    <td>
+                        {{pet.petType}}
+                    </td>
+                    <td>
+                        {{pet.customerId}}
+                    </td>
+                    <td>
+                        <input type="button" class="btn-danger" value="x" ng-click="delete(pet)" />
+                    </td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td>
+                        <input ng-model="name" placeholder="Name" type="text" />
+                    </td>
+                    <td>
+                        <input ng-model="petType" placeholder="Pet Type" type="text" />
+                    </td>
+                    <td>
+                        <input ng-model="customerId" placeholder="Customer Id" type="number" />
+                    </td>
+                    <td>
+                        <input class="btn-primary" ng-click="add()" type="button" value="+" />
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js" type="text/javascript"></script>
+    <script>
+        angular.module('petsApp', [])
+            .controller('petsController', function ($scope, $http) {
+                $http.get("@Url.Action("GetPets", "Pets")").then(function (response) {
+                    $scope.pets = response.data;
+                });
+                $scope.add = function () {
+                    var pet = {
+                        name: $scope.name,
+                        petType: $scope.petType,
+                        customerId: $scope.customerId
+                    };
+
+                    $http.post("@Url.Action("PostPet", "Pets")", pet).then(function (response) {
+                        $scope.pets.push(response.data);
+                    });
+
+                    $scope.name = '';
+                    $scope.petType = '';
+                    $scope.customerId = '';
+                }
+                $scope.delete = function (pet) {
+                    $http.delete("@Url.Action("PostPet", "Pets")/" + pet.id).then(function (response) {
+                        var index = $scope.pets.indexOf(pet);
+                        $scope.pets.splice(index, 1);
+                    });
+                }
+            });
+    </script>
+}

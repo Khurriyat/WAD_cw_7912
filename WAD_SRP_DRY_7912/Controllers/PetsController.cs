@@ -2,17 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using WAD_PetCare_7912.Models;
 using WAD_PetCare_7912_DAL;
 using WAD_PetCare_7912_DAL.DBO;
 using WAD_PetCare_7912_DAL.Repositories;
 
 namespace WAD_PetCare_7912.Controllers
 {
-    public class PetsController : Controller
+    [Route("api/[controller]")]
+    [ApiController]
+    public class PetsController : ControllerBase
     {
         private readonly IRepository<Pet> _petRepo;
         private readonly IRepository<Customer> _customerRepo;
@@ -24,134 +25,91 @@ namespace WAD_PetCare_7912.Controllers
             _customerRepo = customerRepo;
         }
 
-        // GET: Pets
-        public async Task<IActionResult> Index()
+        // GET: api/Pets
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Pet>>> GetPets()
         {
-            return View(await _petRepo.GetAllAsync());
+            return await _petRepo.GetAllAsync();
         }
 
-        // GET: Pets/Details/5
-        public async Task<IActionResult> Details(int? id)
+        // GET: api/Pets/5
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Pet>> GetPet(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            var pet = await _petRepo.GetByIdAsync(id);
 
-            var pet = await _petRepo.GetByIdAsync(id.Value);
             if (pet == null)
             {
                 return NotFound();
             }
 
-            return View(pet);
+            return pet;
         }
 
-        // GET: Pets/Create
-        public async Task<IActionResult> Create()
+        // PUT: api/Pets/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for
+        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutPet(int id, Pet pet)
         {
-            var petViewModel = new PetViewModel();
-            petViewModel.Customers = new SelectList(await _customerRepo.GetAllAsync(), "Id", "FirstName");
-            return View(petViewModel);
-        }
-
-        // POST: Pets/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,PetType,CustomerId")] Pet pet)
-        {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                await _petRepo.CreateAsync(pet);
-                return RedirectToAction(nameof(Index));
-            }
-            var petViewModel = (PetViewModel)pet;
-            petViewModel.Customers = new SelectList(await _customerRepo.GetAllAsync(), "Id", "FirstName", pet.CustomerId);
-            return View(petViewModel);
-        }
-
-        // GET: Pets/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
+                return BadRequest(ModelState);
             }
 
-            var pet = await _petRepo.GetByIdAsync(id.Value);
-            if (pet == null)
-            {
-                return NotFound();
-            }
-            var petViewModel = new PetViewModel();
-            petViewModel.Id = pet.Id;
-            petViewModel.Customers = new SelectList(await _customerRepo.GetAllAsync(), "Id", "FirstName", pet.CustomerId);
-            return View(petViewModel);
-        }
-
-        // POST: Pets/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,PetType,CustomerId")] PetViewModel pet)
-        {
             if (id != pet.Id)
             {
-                return NotFound();
+                return BadRequest();
             }
 
-            if (ModelState.IsValid)
+            try
             {
-                try
-                {
-                    await _petRepo.UpdateAsync(pet);
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!_petRepo.Exists(pet.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                await _petRepo.UpdateAsync(pet);
             }
-            var petViewModel = new PetViewModel();
-            petViewModel.CopyFromPet(pet);
-            pet.Customers = new SelectList(await _customerRepo.GetAllAsync(), "Id", "FirstName", pet.CustomerId);
-            return View(pet);
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!_petRepo.Exists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }           
+
+            return NoContent();
         }
 
-        // GET: Pets/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
+        // POST: api/Pets
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for
+        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+        [HttpPost]
+        public async Task<ActionResult<Pet>> PostPet(Pet pet)
+        {           
+            if (!ModelState.IsValid)
             {
-                return NotFound();
+                return BadRequest(ModelState);
             }
 
-            var pet = await _petRepo.GetByIdAsync(id.Value);
+            await _petRepo.CreateAsync(pet);
+
+            return CreatedAtAction("GetPet", new { id = pet.Id }, pet);
+        }
+
+        // DELETE: api/Pets/5
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<Pet>> DeletePet(int id)
+        {
+            var pet = await _petRepo.GetByIdAsync(id);
             if (pet == null)
             {
                 return NotFound();
             }
 
-            return View(pet);
-        }
-
-        // POST: Pets/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
             await _petRepo.DeleteAsync(id);
-            return RedirectToAction(nameof(Index));
+
+            return pet;
         }
     }
 }

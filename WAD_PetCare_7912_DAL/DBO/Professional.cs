@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace WAD_PetCare_7912_DAL.DBO
 {
-    public class Professional: IValidatableObject
+    public class Professional : IValidatableObject
     {
         public int Id { get; set; }
 
@@ -23,12 +23,13 @@ namespace WAD_PetCare_7912_DAL.DBO
         [Required]
         [Display(Name = "Date of Birth")]
         public DateTime DoB { get; set; }
+        
 
         [Required]
         public string Education { get; set; }
 
         [Required]
-        [Display(Name = "Work Experience")]
+        [Display(Name = "Work Experience")]        
         public string WorkExperience { get; set; }
 
         [Required]

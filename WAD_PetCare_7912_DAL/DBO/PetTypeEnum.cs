@@ -9,11 +9,9 @@ namespace WAD_PetCare_7912_DAL.DBO
         Turtle,
         Cat,
         Dog,
-        Pig,
         Rabbit,
         Parrot,
         Fish,
-        Horse,
         Duck,
         Chicken
     }

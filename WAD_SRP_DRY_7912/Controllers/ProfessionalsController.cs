@@ -2,15 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WAD_PetCare_7912_DAL;
 using WAD_PetCare_7912_DAL.DBO;
 using WAD_PetCare_7912_DAL.Repositories;
 
-namespace WAD_SRP_DRY_7912.Controllers
+namespace WAD_PetCare_7912.Controllers
 {
-    public class ProfessionalsController : Controller
+    [Route("api/[controller]")]
+    [ApiController]
+    public class ProfessionalsController : ControllerBase
     {
         private readonly IRepository<Professional> _professionalRepo;
 
@@ -19,123 +22,90 @@ namespace WAD_SRP_DRY_7912.Controllers
             _professionalRepo = professionalRepo;
         }
 
-        // GET: Professionals
-        public async Task<IActionResult> Index()
+        // GET: api/Professionals
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Professional>>> GetProfessionals()
         {
-            return View(await _professionalRepo.GetAllAsync());
+            return await _professionalRepo.GetAllAsync();
         }
 
-        // GET: Professionals/Details/5
-        public async Task<IActionResult> Details(int? id)
+        // GET: api/Professionals/5
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Professional>> GetProfessional(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            var professional = await _professionalRepo.GetByIdAsync(id);
 
-            var professional = await _professionalRepo.GetByIdAsync(id.Value);
             if (professional == null)
             {
                 return NotFound();
             }
 
-            return View(professional);
+            return professional;
         }
 
-        // GET: Professionals/Create
-        public IActionResult Create()
+        // PUT: api/Professionals/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for
+        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutProfessional(int id, Professional professional)
         {
-            return View();
-        }
-
-        // POST: Professionals/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,FirstName,LastName,DoB,Education,WorkExperience,Speciality,PhoneNo,Email,Address")] Professional professional)
-        {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                await _professionalRepo.CreateAsync(professional);
-                return RedirectToAction(nameof(Index));
-            }
-            return View(professional);
-        }
-
-        // GET: Professionals/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
+                return BadRequest(ModelState);
             }
 
-            var professional = await _professionalRepo.GetByIdAsync(id.Value);
-            if (professional == null)
-            {
-                return NotFound();
-            }
-            return View(professional);
-        }
-
-        // POST: Professionals/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,FirstName,LastName,DoB,Education,WorkExperience,Speciality,PhoneNo,Email,Address")] Professional professional)
-        {
             if (id != professional.Id)
             {
-                return NotFound();
+                return BadRequest();
             }
 
-            if (ModelState.IsValid)
+            try
             {
-                try
-                {
-                    await _professionalRepo.UpdateAsync(professional);
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!_professionalRepo.Exists(professional.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                await _professionalRepo.UpdateAsync(professional);
             }
-            return View(professional);
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!_professionalRepo.Exists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
         }
 
-        // GET: Professionals/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        // POST: api/Professionals
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for
+        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+        [HttpPost]
+        public async Task<ActionResult<Professional>> PostProfessional(Professional professional)
         {
-            if (id == null)
+            if (!ModelState.IsValid)
             {
-                return NotFound();
+                return BadRequest(ModelState);
             }
-            var professional = await _professionalRepo.GetByIdAsync(id.Value);
+            await _professionalRepo.CreateAsync(professional);
+
+            return CreatedAtAction("GetProfessional", new { id = professional.Id }, professional);
+        }
+
+        // DELETE: api/Professionals/5
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<Professional>> DeleteProfessional(int id)
+        {
+            var professional = await _professionalRepo.GetByIdAsync(id);
             if (professional == null)
             {
                 return NotFound();
             }
 
-            return View(professional);
-        }
-
-        // POST: Professionals/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
             await _professionalRepo.DeleteAsync(id);
-            return RedirectToAction(nameof(Index));
+
+            return professional;
         }
     }
 }

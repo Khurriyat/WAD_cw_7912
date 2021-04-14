@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace WAD_PetCare_7912.Controllers
 {
-    public class HomeController : Controller
+    public class CustomersClientController : Controller
     {
         public IActionResult Index()
         {
