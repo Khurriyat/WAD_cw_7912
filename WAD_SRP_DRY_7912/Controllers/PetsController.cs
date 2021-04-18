@@ -16,13 +16,10 @@ namespace WAD_PetCare_7912.Controllers
     public class PetsController : ControllerBase
     {
         private readonly IRepository<Pet> _petRepo;
-        private readonly IRepository<Customer> _customerRepo;
 
-        public PetsController(IRepository<Pet> petRepo,
-            IRepository<Customer> customerRepo)
+        public PetsController(IRepository<Pet> petRepo)
         {
             _petRepo = petRepo;
-            _customerRepo = customerRepo;
         }
 
         // GET: api/Pets

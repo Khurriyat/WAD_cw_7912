@@ -12,5 +12,10 @@ namespace WAD_PetCare_7912.Controllers
         {
             return View();
         }
+
+        public IActionResult Edit()
+        {
+            return View();
+        }
     }
 }

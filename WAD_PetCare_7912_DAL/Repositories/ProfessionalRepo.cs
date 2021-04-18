@@ -16,8 +16,7 @@ namespace WAD_PetCare_7912_DAL.Repositories
 
         public async Task CreateAsync(Professional entity)
         {
-            _context.Add(entity);
-            await _context.SaveChangesAsync();
+            await Create(entity);
         }
 
         public async Task DeleteAsync(int id)
@@ -40,8 +39,7 @@ namespace WAD_PetCare_7912_DAL.Repositories
 
         public async Task UpdateAsync(Professional entity)
         {
-            _context.Update(entity);
-            await _context.SaveChangesAsync();
+            await Update(entity);
         }
 
         public bool Exists(int id)

@@ -358,3 +358,6 @@ C:\Users\Khurriyat\Desktop\WAD_PetCare_7912\WAD_SRP_DRY_7912\obj\Debug\netcoreap
 C:\Users\Khurriyat\Desktop\WAD_PetCare_7912\WAD_SRP_DRY_7912\obj\Debug\netcoreapp3.1\Razor\Views\Home\Index.cshtml.g.cs
 C:\Users\Khurriyat\Desktop\WAD_PetCare_7912\WAD_SRP_DRY_7912\obj\Debug\netcoreapp3.1\Razor\Views\PetsClient\Index.cshtml.g.cs
 C:\Users\Khurriyat\Desktop\WAD_PetCare_7912\WAD_SRP_DRY_7912\obj\Debug\netcoreapp3.1\Razor\Views\CustomersClient\Index.cshtml.g.cs
+C:\Users\Khurriyat\Desktop\WAD_PetCare_7912\WAD_SRP_DRY_7912\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.JsonPatch.dll
+C:\Users\Khurriyat\Desktop\WAD_PetCare_7912\WAD_SRP_DRY_7912\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+C:\Users\Khurriyat\Desktop\WAD_PetCare_7912\WAD_SRP_DRY_7912\bin\Debug\netcoreapp3.1\Newtonsoft.Json.Bson.dll

@@ -13,14 +13,20 @@ namespace WAD_PetCare_7912_DAL.Repositories
         }
         public async Task CreateAsync(Customer entity)
         {
-            _context.Add(entity);
-            await _context.SaveChangesAsync();
+           await Create(entity); //this the same code i will use for other repos )) will that be ok? yea
+            //much simpler isnt it, maybe, i have no much experience in coding 
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task DeleteAsync(int id) //this also can be done? object ni ichidan Customers ni olish qiyinde 
+            //hozi ok
         {
             var customer = await _context.Customers.FindAsync(id);
-            _context.Customers.Remove(customer);
+            //aaaa confused
+            //Hurriyat you here?aha
+            //nimaga add qilyotganda bunaq soramidi, not sure, workshopdan qiludim, that's ok
+            //faqat qilinadganlani qb ketaman just one more try th
+            _context.Customers.Remove(customer); //no idea (( for this
+            
             await _context.SaveChangesAsync();
         }
 
@@ -38,8 +44,9 @@ namespace WAD_PetCare_7912_DAL.Repositories
 
         public async Task UpdateAsync(Customer entity)
         {
-            _context.Update(entity);
-            await _context.SaveChangesAsync();
+            await Update(entity);
+            /*_context.Update(entity);
+            await _context.SaveChangesAsync();*/
         }
 
         public bool Exists(int id)

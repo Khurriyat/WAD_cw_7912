@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace WAD_PetCare_7912_DAL.DBO
@@ -37,6 +38,7 @@ namespace WAD_PetCare_7912_DAL.DBO
         public int NoOfPets { get; set; }
 
         [Display(Name = "Professional")]
+
         public int? ProfessionalId { get; set; }
 
         public virtual Professional Professional { get; set; }

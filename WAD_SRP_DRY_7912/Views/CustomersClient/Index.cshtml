@@ -5,9 +5,14 @@
 
 <h1>Customers</h1>
 
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+
 <div id="customersContainer" ng-app="customersApp">
     <div ng-controller="customersController">
-        <table class="table">
+        <table class="table table-bordered">
             <tbody>
 
                 <tr>
@@ -35,9 +40,15 @@
                     <td>
                         <strong>Professional Id</strong>
                     </td>
+                    <td>
+                        <strong>Delete</strong>
+                    </td>
+                    <td>
+                        <strong>Edit</strong>
+                    </td>
                 </tr>
 
-                <tr ng-repeat="customer in customers">
+                <tr ng-repeat="customer in customers">                    
                     <td>
                         {{customer.id}}
                     </td>
@@ -63,7 +74,10 @@
                         {{customer.professionalId}}
                     </td>
                     <td>
-                        <input type="button" class="btn-danger" value="x" ng-click="delete(customer)" />
+                        <input type="button" class="btn btn-danger" value="x" ng-click="delete(customer)" />
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal" ng-click="selectCustomer(customer)">Edit</button>
                     </td>
                 </tr>
             </tbody>
@@ -95,9 +109,87 @@
                     <td>
                         <input class="btn-primary" ng-click="add()" type="button" value="+" />
                     </td>
+                    <td></td>
                 </tr>
             </tfoot>
         </table>
+
+        <div class="modal fade" id="myModal" role="dialog">
+            <div class="modal-dialog">
+
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Edit Customer</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <div class="modal-body">
+                        <form class="form-horizontal" action="/action_page.php">
+
+                            <div class="form-group">
+                                <label class="control-label col-sm-10">First Name</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" ng-model="clickedCustomer.firstName">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-sm-10">Last Name</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" ng-model="clickedCustomer.lastName">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-sm-10">Phone Number</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" ng-model="clickedCustomer.phoneNo">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-sm-2">Email</label>
+                                <div class="col-sm-10">
+                                    <input type="email" class="form-control" ng-model="clickedCustomer.email">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-sm-2">Address</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" ng-model="clickedCustomer.address">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-sm-10">Number of Pets</label>
+                                <div class="col-sm-10">
+                                    <input type="number" class="form-control" ng-model="clickedCustomer.noOfPets">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-sm-10">Professional Id</label>
+                                <div class="col-sm-10">
+                                    <input type="number" class="form-control" ng-model="clickedCustomer.professionalId">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-sm-offset-2 col-sm-10">
+                                    <button type="submit" class="btn btn-info" data-dismiss="modal" ng-click="update()">Save</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 </div>
 
@@ -109,6 +201,22 @@
                 $http.get("@Url.Action("GetCustomers", "Customers")").then(function (response) {
                     $scope.customers = response.data;
                 });
+
+                $scope.clickedCustomer = {};
+                $scope.selectCustomer = function (customer) {
+                    $scope.clickedCustomer = customer;
+                };
+                $scope.message = "";
+
+
+                $scope.update = function () {
+                    $scope.message = "Customer is updated successfully!";
+                };
+
+                $scope.clearMessage = function () {
+                    $scope.message = "";
+                };
+
                 $scope.add = function () {
                     var customer = {
                         firstName: $scope.firstName,
@@ -131,12 +239,19 @@
                     $scope.address = '';
                     $scope.noOfPets = '';
                     $scope.professionalId = '';
+
+                    $scope.message = "New customer is added successfully!";
                 }
                 $scope.delete = function (customer) {
-                    $http.delete("@Url.Action("PostCustomer", "Customers")/" + customer.id).then(function (response) {
-                        var index = $scope.customers.indexOf(customer);
-                        $scope.customers.splice(index, 1);
-                    });
+                    var result = confirm("Do you want to delete the customer?")
+                    if (result == true) {
+                        $http.delete("@Url.Action("PostCustomer", "Customers")/" + customer.id).then(function (response) {
+                            var index = $scope.customers.indexOf(customer);
+                            $scope.customers.splice(index, 1);
+
+                            $scope.message = "Customer is deleted successfully!";
+                        });
+                    }
                 }
             });
     </script>

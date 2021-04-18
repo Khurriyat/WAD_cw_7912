@@ -5,9 +5,12 @@
 
 <h1>Pets</h1>
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
 <div id="petsContainer" ng-app="petsApp">
     <div ng-controller="petsController">
-        <table class="table">
+        <table class="table table-bordered">
             <tbody>
 
                 <tr>
@@ -23,6 +26,12 @@
                     <td>
                         <strong>Customer Id</strong>
                     </td>
+                    <td>
+                        <strong>Delete</strong>
+                    </td>
+                    <td>
+                        <strong>Edit</strong>
+                    </td>
                 </tr>
 
                 <tr ng-repeat="pet in pets">
@@ -33,33 +42,91 @@
                         {{pet.name}}
                     </td>
                     <td>
-                        {{pet.petType}}
+                        {{types[pet.petType]}}
                     </td>
                     <td>
                         {{pet.customerId}}
                     </td>
                     <td>
-                        <input type="button" class="btn-danger" value="x" ng-click="delete(pet)" />
+                        <input type="button" class="btn btn-danger" value="x" ng-click="delete(pet)" />
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal" ng-click="selectPet(pet)">Edit</button>
                     </td>
                 </tr>
             </tbody>
             <tfoot>
                 <tr>
+                    <td></td>
                     <td>
                         <input ng-model="name" placeholder="Name" type="text" />
                     </td>
                     <td>
-                        <input ng-model="petType" placeholder="Pet Type" type="text" />
+                        <select type="text" style="padding-bottom:6px;" ng-model="petType"
+                                asp-items="Html.GetEnumSelectList<PetTypeEnum>()">
+                            <option value="" disabled selected hidden>Choose Pet Type...</option>
+                        </select>
                     </td>
                     <td>
                         <input ng-model="customerId" placeholder="Customer Id" type="number" />
                     </td>
                     <td>
-                        <input class="btn-primary" ng-click="add()" type="button" value="+" />
+                        <input class="btn btn-primary" ng-click="add()" type="button" value="+" />
                     </td>
+                    <td></td>
                 </tr>
             </tfoot>
         </table>
+
+        <div class="modal fade" id="myModal" role="dialog">
+            <div class="modal-dialog">
+
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Edit Pet</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <div class="modal-body">
+                        <form class="form-horizontal" action="/action_page.php">
+
+                            <div class="form-group">
+                                <label class="control-label col-sm-10">Name</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" ng-model="clickedPet.name">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-sm-10">Pet Type</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" ng-model="clickedPet.petType"
+                                asp-items="Html.GetEnumSelectList<PetTypeEnum>()" >
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-sm-10">Customer Id</label>
+                                <div class="col-sm-10">
+                                    <input type="number" class="form-control" ng-model="clickedPet.customerId">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-sm-offset-2 col-sm-10">
+                                    <button type="submit" class="btn btn-info" data-dismiss="modal" ng-click="update()">Save</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 </div>
 
@@ -70,7 +137,33 @@
             .controller('petsController', function ($scope, $http) {
                 $http.get("@Url.Action("GetPets", "Pets")").then(function (response) {
                     $scope.pets = response.data;
+                    $scope.types ={
+                        0: "Turtle",
+                        1: "Cat",
+                        2: "Dog",
+                        3: "Rabbit",
+                        4: "Parrot",
+                        5: "Fish",
+                        6: "Duck",
+                        7: "Chicken"
+                    }
                 });
+
+                $scope.clickedPet = {};
+                $scope.selectPet = function (pet) {
+                    $scope.clickedPet = pet;
+                };
+                $scope.message = "";
+
+                $scope.clearMessage = function () {
+                    $scope.message = "";
+                };
+
+
+                $scope.update = function () {
+                    $scope.message = "Pet is updated successfully!";
+                };
+
                 $scope.add = function () {
                     var pet = {
                         name: $scope.name,
@@ -85,12 +178,20 @@
                     $scope.name = '';
                     $scope.petType = '';
                     $scope.customerId = '';
+
+                    $scope.message = "New pet is added successfully!";
                 }
+
                 $scope.delete = function (pet) {
-                    $http.delete("@Url.Action("PostPet", "Pets")/" + pet.id).then(function (response) {
-                        var index = $scope.pets.indexOf(pet);
-                        $scope.pets.splice(index, 1);
-                    });
+                    var result = confirm("Do you want to delete the pet?")
+                    if (result == true) {
+                        $http.delete("@Url.Action("PostPet", "Pets")/" + pet.id).then(function (response) {
+                            var index = $scope.pets.indexOf(pet);
+                            $scope.pets.splice(index, 1);
+
+                            $scope.message = "Pet is deleted successfully!";
+                        });
+                    }
                 }
             });
     </script>
