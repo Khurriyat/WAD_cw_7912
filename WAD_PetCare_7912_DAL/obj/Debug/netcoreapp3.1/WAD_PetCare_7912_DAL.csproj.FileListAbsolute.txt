@@ -21,3 +21,4 @@ C:\Users\Khurriyat\Desktop\WAD_PetCare_7912\WAD_PetCare_7912_DAL\bin\Debug\netco
 C:\Users\Khurriyat\Desktop\WAD_PetCare_7912\WAD_PetCare_7912_DAL\obj\Debug\netcoreapp3.1\WAD_PetCare_7912_DAL.dll
 C:\Users\Khurriyat\Desktop\WAD_PetCare_7912\WAD_PetCare_7912_DAL\obj\Debug\netcoreapp3.1\WAD_PetCare_7912_DAL.pdb
 C:\Users\Khurriyat\Desktop\WAD_PetCare_7912\WAD_PetCare_7912_DAL\obj\Debug\netcoreapp3.1\WAD_PetCare_7912_DAL.genruntimeconfig.cache
+C:\Users\Khurriyat\Desktop\WAD_PetCare_7912\WAD_PetCare_7912_DAL\obj\Debug\netcoreapp3.1\WAD_PetCare_7912_DAL.csprojAssemblyReference.cache

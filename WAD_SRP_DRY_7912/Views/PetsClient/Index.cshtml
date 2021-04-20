@@ -24,7 +24,7 @@
                         <strong>Pet Type</strong>
                     </td>
                     <td>
-                        <strong>Customer Id</strong>
+                        <strong>Customer</strong>
                     </td>
                     <td>
                         <strong>Delete</strong>
@@ -45,13 +45,14 @@
                         {{types[pet.petType]}}
                     </td>
                     <td>
-                        {{pet.customerId}}
+                        {{pet.customer.firstName}}
                     </td>
                     <td>
                         <input type="button" class="btn btn-danger" value="x" ng-click="delete(pet)" />
                     </td>
                     <td>
-                        <button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal" ng-click="selectPet(pet)">Edit</button>
+                        <button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal" 
+                                ng-model="petType" ng-click="selectPet(pet)">Edit</button>
                     </td>
                 </tr>
             </tbody>
@@ -64,12 +65,14 @@
                     <td>
                         <select type="text" style="padding-bottom:6px;" ng-model="petType"
                                 asp-items="Html.GetEnumSelectList<PetTypeEnum>()">
-                            <option value="" disabled selected hidden>Choose Pet Type...</option>
+                            <option value="" disabled selected hidden>Select Pet Type...</option>
                         </select>
                     </td>
                     <td>
-                        <input ng-model="customerId" placeholder="Customer Id" type="number" />
-                    </td>
+                        <select ng-model="customerId" style="padding-bottom:6px;" 
+                                ng-options="customer.id as customer.firstName for customer in customers" type="text">
+                            <option value="" disabled selected hidden>Select Customer...</option>
+                        </select>
                     <td>
                         <input class="btn btn-primary" ng-click="add()" type="button" value="+" />
                     </td>
@@ -100,21 +103,29 @@
                             <div class="form-group">
                                 <label class="control-label col-sm-10">Pet Type</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" ng-model="clickedPet.petType"
-                                asp-items="Html.GetEnumSelectList<PetTypeEnum>()" >
+                                    <select type="text" class="form-control" ng-model="clickedPet.types[pet.petType]"
+                                            asp-items="Html.GetEnumSelectList<PetTypeEnum>()" style="padding-bottom:6px;">
+                                        <option value="" disabled selected hidden>Select Pet Type...</option>
+                                    </select>
                                 </div>
+
                             </div>
 
                             <div class="form-group">
-                                <label class="control-label col-sm-10">Customer Id</label>
+                                <label class="control-label col-sm-10">Customer</label>
                                 <div class="col-sm-10">
-                                    <input type="number" class="form-control" ng-model="clickedPet.customerId">
+                                    <select type="text" class="form-control" style="padding-bottom:6px;" 
+                                           ng-options="customer.id as customer.firstName for customer in customers" 
+                                           ng-model="clickedPet.pet.customer.firstName">
+                                        <option value="" disabled selected hidden>Select Customer...</option>
+                                    </select>
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <div class="col-sm-offset-2 col-sm-10">
-                                    <button type="submit" class="btn btn-info" data-dismiss="modal" ng-click="update()">Save</button>
+                                    <button type="submit" class="btn btn-info" data-dismiss="modal" 
+                                            ng-click="update()">Save</button>
                                 </div>
                             </div>
                         </form>
@@ -149,9 +160,24 @@
                     }
                 });
 
+                $http.get("@Url.Action("GetCustomers", "Customers")").then(function (response) {
+                        $scope.customers = response.data;
+                    });
+
                 $scope.clickedPet = {};
                 $scope.selectPet = function (pet) {
                     $scope.clickedPet = pet;
+
+                    $scope.types = {
+                        0: "Turtle",
+                        1: "Cat",
+                        2: "Dog",
+                        3: "Rabbit",
+                        4: "Parrot",
+                        5: "Fish",
+                        6: "Duck",
+                        7: "Chicken"
+                    }
                 };
                 $scope.message = "";
 
@@ -161,6 +187,7 @@
 
 
                 $scope.update = function () {
+
                     $scope.message = "Pet is updated successfully!";
                 };
 
